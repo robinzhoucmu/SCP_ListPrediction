@@ -4,7 +4,20 @@
 
 using namespace std;
 
+inline char* safe_index(char *start, char v, char *max)
+{
+  while (start != max && *start != v)
+    start++;
+  return start;
+}
+void test_parse_label(char *start, char*max)
+{
 
+}
+void test_parse_vwinput(char *start, char*max)
+{
+    
+}
 inline feature vw_feature_from_string(vw& v, string fstr, unsigned long seed, float val)
 {
   uint32_t foo = VW::hash_feature(v, fstr, seed);
