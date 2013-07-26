@@ -102,7 +102,6 @@ int main(int argc, char * argv[])
     
      //test on the training data first
      cout << "----------" <<endl;
-     cout << "testing on training data" << endl;
      string vwparams_test = "-t -i predictor.vw -p predictionTrained.txt ";
      vw* model_test = VW::initialize(vwparams_test);
      testseqMachine.scp_predict(model_test, test_file_name);

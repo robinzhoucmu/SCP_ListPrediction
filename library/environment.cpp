@@ -166,7 +166,7 @@ void environment::updateSimFeaturesPredictOnly(vw* model)
 
 void environment::oneRoundTrain(vw* model, int numPasses)
 {
-    cout <<"startOneRoundTraining" <<endl;
+    //cout <<"startOneRoundTraining" <<endl;
     model->training = true; 
     if (algo_ == ml::LINEAR_REGRESSION)
 	{
@@ -180,7 +180,7 @@ void environment::oneRoundTrain(vw* model, int numPasses)
 
 void environment::oneRoundPrediction(vw* model, bool useGreedyOracle )
 {
-    cout << "startoneRoundPrediction" <<endl;
+    //cout << "startoneRoundPrediction" <<endl;
     double maxValue = -1e10;
     int maxItemId = -1;
     double modelPredScore = 0;
@@ -294,7 +294,7 @@ vector<double> environment::getPerSlotScore( submodOracle & fOracle)
 	    //	    cout << "PredictList at Pos " << pos << " have marginal gain : " << gain <<endl;
 	    fVal += gain;
 	    perSlotScore.push_back(fVal);
-	    cout << "PredictList at Pos " << pos << " is " << predList_[pos] << " , has submod value : " << fVal << endl;
+	    //cout << "PredictList at Pos " << pos << " is " << predList_[pos] << " , has submod value : " << fVal << endl;
 	}
     return perSlotScore;
 }

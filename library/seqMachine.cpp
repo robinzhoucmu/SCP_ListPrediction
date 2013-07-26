@@ -126,7 +126,7 @@ void seqMachine::check_predict_score (submodOracle & fOracle)
     double avgFinalScore;
     for (int i = 0; i < envs.size(); i++)
 	{
-	    cout << "For Environment " << i <<endl;
+	    //	    cout << "For Environment " << i <<endl;
 	    vector<double> score = envs[i].getPerSlotScore(fOracle);
 	    avgFinalScore += score[score.size() - 1];
 	}
@@ -140,10 +140,12 @@ vector<int> seqMachine::generate_random_index(int tot)
     for (int i = 0; i < tot; i++ )
 	randIndex.push_back(i);
     std::random_shuffle(randIndex.begin(), randIndex.end());
+    /*
     for (int i = 0; i < randIndex.size(); i++)
 	{
 	    cout << randIndex[i] << ",";
 	}
     cout << endl;
+    */
     return randIndex;
 }
