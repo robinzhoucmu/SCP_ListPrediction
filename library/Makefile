@@ -34,7 +34,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = x86_64-unknown-linux-gnu
 host_triplet = x86_64-unknown-linux-gnu
-bin_PROGRAMS = library_example$(EXEEXT)
+bin_PROGRAMS = scp$(EXEEXT)
 subdir = library
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -56,10 +56,10 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_library_example_OBJECTS = main.$(OBJEXT) environment.$(OBJEXT) \
-	item.$(OBJEXT) submodOracle.$(OBJEXT) seqMachine.$(OBJEXT)
-library_example_OBJECTS = $(am_library_example_OBJECTS)
-library_example_DEPENDENCIES = ../vowpalwabbit/libvw.la \
+am_scp_OBJECTS = main.$(OBJEXT) environment.$(OBJEXT) item.$(OBJEXT) \
+	submodOracle.$(OBJEXT) seqMachine.$(OBJEXT)
+scp_OBJECTS = $(am_scp_OBJECTS)
+scp_DEPENDENCIES = ../vowpalwabbit/libvw.la \
 	../vowpalwabbit/liballreduce.la
 DEFAULT_INCLUDES = -I. -I$(top_builddir)/vowpalwabbit
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -74,8 +74,8 @@ CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(library_example_SOURCES)
-DIST_SOURCES = $(library_example_SOURCES)
+SOURCES = $(scp_SOURCES)
+DIST_SOURCES = $(scp_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -207,9 +207,12 @@ top_build_prefix = ../
 top_builddir = ..
 top_srcdir = ..
 #bin_PROGRAMS = recommend
-library_example_SOURCES = main.cpp environment.cpp item.cpp submodOracle.cpp seqMachine.cpp
+#library_example_SOURCES = main.cpp environment.cpp item.cpp submodOracle.cpp seqMachine.cpp
+scp_SOURCES = main.cpp environment.cpp item.cpp submodOracle.cpp seqMachine.cpp
+
 #library_example_SOURCES = ezexample_predict.cc
-library_example_LDADD = ../vowpalwabbit/libvw.la ../vowpalwabbit/liballreduce.la
+#library_example_LDADD = ../vowpalwabbit/libvw.la ../vowpalwabbit/liballreduce.la
+scp_LDADD = ../vowpalwabbit/libvw.la ../vowpalwabbit/liballreduce.la
 ACLOCAL_AMFLAGS = -I acinclude.d
 INCLUDES = ${BOOST_CPPFLAGS} ${ZLIB_CPPFLAGS} ${PTHREAD_CFLAGS}
 AM_LDFLAGS = ${BOOST_LDFLAGS} ${BOOST_PROGRAM_OPTIONS_LIB} ${ZLIB_LDFLAGS} ${PTHREAD_LIBS}
@@ -290,9 +293,9 @@ clean-binPROGRAMS:
 	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
 	echo " rm -f" $$list; \
 	rm -f $$list
-library_example$(EXEEXT): $(library_example_OBJECTS) $(library_example_DEPENDENCIES) $(EXTRA_library_example_DEPENDENCIES) 
-	@rm -f library_example$(EXEEXT)
-	$(CXXLINK) $(library_example_OBJECTS) $(library_example_LDADD) $(LIBS)
+scp$(EXEEXT): $(scp_OBJECTS) $(scp_DEPENDENCIES) $(EXTRA_scp_DEPENDENCIES) 
+	@rm -f scp$(EXEEXT)
+	$(CXXLINK) $(scp_OBJECTS) $(scp_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
