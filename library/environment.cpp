@@ -112,7 +112,7 @@ void environment::updateSimFeatures(vw* model, submodOracle & fOracle)
 {
     //get the submodular values for things in the predList_
     // double predListScore = 0;
-    cout << "updateFeatures" << endl;    
+    //  cout << "updateFeatures" << endl;    
     vector<simpleItem> predListItems;
     for (int i = 0; i < predList_.size(); i++)
 	{
@@ -224,6 +224,7 @@ void environment::oneRoundPrediction(vw* model, bool useGreedyOracle )
 	    curSubModScore_ += maxValue * items_[maxItemId].size;  
 	    tag_usable[maxItemId] = false;
 	}
+    /*
     //display prediction information
     for (int i = 0; i < predList_.size(); i++)
 	{
@@ -231,6 +232,7 @@ void environment::oneRoundPrediction(vw* model, bool useGreedyOracle )
 	}
     cout << " currentSubModScore:  " << curSubModScore_ << endl;
     cout << " currentBudget: " << curBudget_<< endl;
+    */
 }
 
 void environment::multiRoundTrain(vw* model, submodOracle & fOracle, bool useGreedyPolicy, int numPasses)
@@ -242,7 +244,7 @@ void environment::multiRoundTrain(vw* model, submodOracle & fOracle, bool useGre
     memset(tag_usable, true , sizeof(bool) * items_.size());
     while (haveSpace_)
 	{
-	    cout << "trainingOneRound" << endl;
+	    //	    cout << "trainingOneRound" << endl;
 	    oneRoundTrain(model, numPasses);
 	    //if useGreedyPolicy is true 
 	    oneRoundPrediction(model, useGreedyPolicy); 

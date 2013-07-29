@@ -36,7 +36,8 @@ void seqMachine::construct_envs_items(vw*model, istream &fin)
 	    ct++;
 	}
 }
-
+//change this to two subprocess, greedy train and per iteration train
+//add a function called batch read (read all the environments and store them in the env vector)
 void seqMachine::scp_train(vw*model, submodOracle & fOracle, string fileName)
 {
     
@@ -87,7 +88,7 @@ void seqMachine::scp_train(vw*model, submodOracle & fOracle, string fileName)
 		    ct++;
 		}
 	    
-	    randIndex = generate_random_index(envs.size());
+	    //    randIndex = generate_random_index(envs.size());
 	    for (int i = 0; i< envs.size(); i++)
 		{
 		    envs[randIndex[i]].multiRoundTrain(model, fOracle, false, num_passes_);
@@ -119,6 +120,29 @@ void seqMachine::scp_predict(vw* model, string fileName)
 	    ct++;
 	}
     fin.close();
+}
+
+void seqMachine::cross_validation(vw * model, string trainingFileName, string validationFileName) 
+{
+    double validationAcc = 0;
+    int best_num_iters, best_num_passes;
+    double best_learning_rate;
+    double l2Lambda;
+    double candidate_learning_rate[4] = {0.1, 0.5, 2, 10};
+    double candidate_num_passes[4] = {1, 2, 5, 10};
+    double candidate_l2Lambda[3] = {0.00001, 0.0005, 0.005};
+    int max_iters = 10;
+    for (int ind_lr = 0; ind_lr < sizeof(candidate_learning_rate)/sizeof(candidate_learning_rate[0]); ind_lr++)
+	{
+	    for (int ind_nPasses = 0; ind_nPasses < sizeof(candidate_num_passes)/sizeof(candidate_num_passes[0]); ind_nPasses++)
+		{
+		    for (int ind_l2Lambda = 0; ind_l2Lambda < sizeof(candidate_l2Lambda)/sizeof(candidate_l2Lambda[0]); ind_l2Lambda++)
+			{
+			    
+			}
+		}
+	}
+
 }
 
 void seqMachine::check_predict_score (submodOracle & fOracle)
