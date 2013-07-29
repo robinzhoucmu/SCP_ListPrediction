@@ -1,6 +1,7 @@
 #ifndef ITEM_H
 #define ITEM_H
 
+
 #include "../vowpalwabbit/vw.h"
 #include "../vowpalwabbit/parser.h"
 #include "../vowpalwabbit/simple_label.h"
