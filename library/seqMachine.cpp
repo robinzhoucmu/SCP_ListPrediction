@@ -36,6 +36,22 @@ void seqMachine::construct_envs_items(vw*model, istream &fin)
 	    ct++;
 	}
 }
+void seqMachine::readonly_one_iter_train(vw* model, submodOracle & fOracle, istream &fin, bool isGreedy)
+{
+    int ct = 0;
+    while (!fin.eof())
+	{
+	    environment env;	    
+	    env.read_from_stream(model, fin);
+	    env.setBudget(budget_);
+	    env.setAlgoType(algo_);
+	    env.multiRoundTrain(model, fOracle, isGreedy, num_passes_);
+	    ct++;
+	}
+    cout << "readonly_one_iterations_train on " << ct << " environments" <<endl;
+}
+
+
 //change this to two subprocess, greedy train and per iteration train
 //add a function called batch read (read all the environments and store them in the env vector)
 void seqMachine::scp_train(vw*model, submodOracle & fOracle, string fileName)

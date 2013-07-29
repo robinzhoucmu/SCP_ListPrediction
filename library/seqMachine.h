@@ -20,6 +20,7 @@ class seqMachine
 
     //assume the each env_items set is separated by an empty line
     void construct_envs_items(vw*model, istream &fin);  
+    void readonly_one_iter_train(vw* model, submodOracle & fOracle, istream &fin, bool isGreedy = false);
     void scp_train(vw*model, submodOracle & fOracle, string fileName); //num_iters
     void scp_predict(vw* model, string fileName);
     void cross_validation(vw*model, string trainingFileName, string validationFileName);//model need to be initialized

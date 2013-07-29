@@ -82,7 +82,7 @@ int main(int argc, char * argv[])
 	 }
      
      //construct vwparams
-      vwparams = " -q qd -f predictor.vw --readable_model predictorInfo.txt -c -passes 2";
+      vwparams = " -q qd -f predictor.vw --readable_model predictorInfo.txt -c --passes 10";
       if (algo == ml::SVM_RANK)
 	  {
 	      vwparams += " --loss_function hinge ";
