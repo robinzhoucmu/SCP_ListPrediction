@@ -1,0 +1,13 @@
+This is a instruction file for how to use SCP (Submodular Contexual Policy) code for list prediction. 
+For details of the algorithms, please see our paper http://arxiv.org/pdf/1305.2532.pdf. 
+
+The code is based on vowpal rabbit library, so you need to install vowpal wabbit. This github code base comes with vowpal wabbit. 
+
+How to install?
+
+First follow the intructions as in the README file to install vowpal wabbit on your computer. 
+Then:
+cd library
+make
+
+You will see the scp executable. Follow the command line and input data format instructions to play with it.
