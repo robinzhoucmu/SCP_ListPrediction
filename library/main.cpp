@@ -21,28 +21,7 @@
 using namespace std;
 namespace po = boost::program_options;
 
-string double2str(double val)
-{
-    std::ostringstream out;
-    out << std::fixed << val;
-    return out.str();
-}
-void finish(vw * pointer)
-{
-    pointer->training = true;
-    if (pointer->numpasses > 1)
-			{
-			adjust_used_index(*pointer);
-			pointer->do_reset_source = true;
-			VW::start_parser(*pointer,false);
-			pointer->l.drive(pointer);
-			VW::end_parser(*pointer); 
-			}
-		else
-			release_parser_datastructures(*pointer);
 
-    VW::finish(*pointer);
-}
 int main(int argc, char * argv[])
 {  
     std::srand ( unsigned ( 0 ) ); 
@@ -95,19 +74,7 @@ int main(int argc, char * argv[])
 		 }
 	 }
      
-     //construct vwparams
-     //   vwparams = "-q qd -f predictor.vw --readable_model predictorInfo.txt";
-     vwparams = "-k -q qd -f predictor.vw --readable_model predictorInfo.txt -c --passes 10";
-      if (algo == ml::SVM_RANK)
-	  {
-	      vwparams += " --loss_function hinge ";
-	  }
-     //append l2 lambda norm
-      //    vwparams += (" --l2 " + double2str(l2Lambda)); 
-     //append learning rate
-      // vwparams += ((" -l ") + double2str(learningRate));
-     vw* model = VW::initialize(vwparams);
-     //  vw * model;
+     
      seqMachine testseqMachine;
      multipleGuess01 fOracle;
     
@@ -115,15 +82,10 @@ int main(int argc, char * argv[])
      testseqMachine.setTrainingParameters(train_num_iters, train_num_passes, learningRate, l2Lambda, algo);
      testseqMachine.scp_train( fOracle, train_file_name);
      
-     // finish(model);
-     //   VW::finish(* model);
-     //test on the training data first
-     cout << "----------" <<endl;
-     string vwparams_test = "-t -i predictor.vw -p predictionTrained.txt ";
-      vw* model_test = VW::initialize(vwparams_test);
-      // vw * model_test;
+     //testing 
+     cout << "----------" <<endl;     
      testseqMachine.scp_predict( test_file_name);
      testseqMachine.check_predict_score(fOracle);
-     VW::finish(* model_test);
+     
     return 0;
 }
