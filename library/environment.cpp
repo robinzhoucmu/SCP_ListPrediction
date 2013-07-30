@@ -244,8 +244,8 @@ void environment::multiRoundTrain(vw* model, submodOracle & fOracle, bool useGre
     memset(tag_usable, true , sizeof(bool) * items_.size());
     while (haveSpace_)
 	{
-	    //	    cout << "trainingOneRound" << endl;
-	    oneRoundTrain(model, numPasses);
+	    //   oneRoundTrain(model, numPasses);
+	    oneRoundTrain(model, 1);
 	    //if useGreedyPolicy is true 
 	    oneRoundPrediction(model, useGreedyPolicy); 
 	    updateSimFeatures(model, fOracle);

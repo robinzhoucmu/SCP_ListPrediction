@@ -57,9 +57,9 @@ void seqMachine::multiple_pass_from_cache(vw* pointer)
 	release_parser_datastructures(*pointer);
 }
 
-void seqMachine::scp_train(vw*model, submodOracle & fOracle, string fileName)
+void seqMachine::scp_train( submodOracle & fOracle, string fileName)
 {
-    
+    initialize_vw_training_model();
     //initialize with greedy on each environment
     cout <<"start SCP_TRAIN by Greedy Coaching" <<endl;
     vector<int> randIndex;
@@ -127,10 +127,12 @@ void seqMachine::scp_train(vw*model, submodOracle & fOracle, string fileName)
 	}
     multiple_pass_from_cache(model);   
     cout << "training completed" << endl;
+    VW::finish(*model);
 }
 
 void seqMachine::scp_predict(vw* model, string fileName)
 {
+    initialize_vw_testing_model(model);
     cout << "Run SCP_Predict Only" <<endl;
     ifstream fin;
     fin.open(fileName.c_str());
@@ -194,22 +196,25 @@ vector<int> seqMachine::generate_random_index(int tot)
     for (int i = 0; i < tot; i++ )
 	randIndex.push_back(i);
     std::random_shuffle(randIndex.begin(), randIndex.end());
-    /*
-    for (int i = 0; i < randIndex.size(); i++)
-	{
-	    cout << randIndex[i] << ",";
-	}
-    cout << endl;
-    */
+    
     return randIndex;
 }
 
-void seqMachine::initialize_vw_training_model(vw* model)
+void seqMachine::initialize_vw_training_model()
 {
-    
+    string vwparams = "-k -q qd -f predictor.vw --readable_model predictorInfo.txt -c ";
+    // add number of passes
+    vwparams += " --passes " + int2str(num_passes_);
+    // add l2 regularizer
+    vwparams += " --l2 " + double2str(l2Lambda_);
+    // add learningRate
+    vwparams += " -l " + double2str(learningRate_);
+    cout << vwparams << endl;
+    model = VW::initialize(vwparams);
 }
 
 void seqMachine::initialize_vw_testing_model(vw *model)
 {
-
+    string vwparams = "-t -i predictor.vw";
+    model = VW::initialize(vwparams);
 }

@@ -103,23 +103,25 @@ int main(int argc, char * argv[])
 	      vwparams += " --loss_function hinge ";
 	  }
      //append l2 lambda norm
-     vwparams += (" --l2 " + double2str(l2Lambda)); 
+      //    vwparams += (" --l2 " + double2str(l2Lambda)); 
      //append learning rate
-     vwparams += ((" -l ") + double2str(learningRate));
+      // vwparams += ((" -l ") + double2str(learningRate));
      vw* model = VW::initialize(vwparams);
+     //  vw * model;
      seqMachine testseqMachine;
      multipleGuess01 fOracle;
     
      testseqMachine.setBudget(budget);
-     testseqMachine.setTrainingParameters(train_num_iters, train_num_passes, algo);
-     testseqMachine.scp_train(model, fOracle, train_file_name);
+     testseqMachine.setTrainingParameters(train_num_iters, train_num_passes, learningRate, l2Lambda, algo);
+     testseqMachine.scp_train( fOracle, train_file_name);
      
      // finish(model);
-     VW::finish(* model);
+     //   VW::finish(* model);
      //test on the training data first
      cout << "----------" <<endl;
      string vwparams_test = "-t -i predictor.vw -p predictionTrained.txt ";
-     vw* model_test = VW::initialize(vwparams_test);
+      vw* model_test = VW::initialize(vwparams_test);
+      // vw * model_test;
      testseqMachine.scp_predict(model_test, test_file_name);
      testseqMachine.check_predict_score(fOracle);
      VW::finish(* model_test);
