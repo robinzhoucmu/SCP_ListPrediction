@@ -29,7 +29,7 @@ string double2str(double val)
 }
 void finish(vw * pointer)
 {
-    model->training = true;
+    pointer->training = true;
     if (pointer->numpasses > 1)
 			{
 			adjust_used_index(*pointer);
@@ -41,7 +41,7 @@ void finish(vw * pointer)
 		else
 			release_parser_datastructures(*pointer);
 
-    	VW::finish(*pointer);
+    VW::finish(*pointer);
 }
 int main(int argc, char * argv[])
 {  
@@ -49,7 +49,7 @@ int main(int argc, char * argv[])
     string vwparams = " -f predictor2.vw  --readable_model predictorInfo.txt";
     string train_file_name, test_file_name;
     int train_num_iters = 5;
-    int train_num_passes = 10;
+    int train_num_passes = 1;
     double budget = 8;
     double l2Lambda = 0;
     double learningRate = 0.5;
@@ -114,8 +114,8 @@ int main(int argc, char * argv[])
      testseqMachine.setTrainingParameters(train_num_iters, train_num_passes, algo);
      testseqMachine.scp_train(model, fOracle, train_file_name);
      
-     finish(model);
-     // VW::finish(* model);
+     // finish(model);
+     VW::finish(* model);
      //test on the training data first
      cout << "----------" <<endl;
      string vwparams_test = "-t -i predictor.vw -p predictionTrained.txt ";

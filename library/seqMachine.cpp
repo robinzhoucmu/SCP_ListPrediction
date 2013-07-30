@@ -18,25 +18,14 @@ void seqMachine::construct_envs_items(vw*model, istream &fin)
     int ct = 0;
     while (!fin.eof())
 	{
-	    //assume each environment starts with id,numItems	    	 
-	    /*
-	    getline(fin, str, '\n');
-	    if (fin.eof()) 
-		break;
-	    sscanf(str.c_str(), "%d %d", &id, &numItems);
-	    cout << id <<" " << numItems <<endl;
-	    */
 	    environment env;
 	    cout << "read_from_stream for EnvId " << ct <<endl;
 	    env.read_from_stream(model, fin);
-	    
-	    //  env.read_from_stream(model, fin, numItems);
 	    envs.push_back(env);
-	    // cout << "numItems " << envs[ct].get_numItems() <<endl;
 	    ct++;
 	}
 }
-void seqMachine::readonly_one_iter_train(vw* model, submodOracle & fOracle, istream &fin, bool isGreedy)
+void seqMachine::one_iter_train(vw* model, submodOracle & fOracle, istream &fin, bool isGreedy)
 {
     int ct = 0;
     while (!fin.eof())
@@ -48,12 +37,26 @@ void seqMachine::readonly_one_iter_train(vw* model, submodOracle & fOracle, istr
 	    env.multiRoundTrain(model, fOracle, isGreedy, num_passes_);
 	    ct++;
 	}
+    //  multiple_pass_from_cache(model);
     cout << "readonly_one_iterations_train on " << ct << " environments" <<endl;
 }
 
+void seqMachine::multiple_pass_from_cache(vw* pointer)
+{
+    pointer->training = true;
+    if (pointer->numpasses > 1)
+	{
+	    cout << "multipass" << endl;
+	    adjust_used_index(*pointer);
+	    pointer->do_reset_source = true;
+	    VW::start_parser(*pointer,false);
+	    pointer->l.drive(pointer);
+	    VW::end_parser(*pointer); 
+	}
+    else
+	release_parser_datastructures(*pointer);
+}
 
-//change this to two subprocess, greedy train and per iteration train
-//add a function called batch read (read all the environments and store them in the env vector)
 void seqMachine::scp_train(vw*model, submodOracle & fOracle, string fileName)
 {
     
@@ -62,7 +65,10 @@ void seqMachine::scp_train(vw*model, submodOracle & fOracle, string fileName)
     vector<int> randIndex;
     ifstream fin;
     fin.open(fileName.c_str());
+    one_iter_train(model, fOracle, fin, true);
+    fin.close();
     //    construct_envs_items(model, fin);
+    /*
     envs.clear();
     int ct = 0;
     while (!fin.eof())
@@ -77,6 +83,7 @@ void seqMachine::scp_train(vw*model, submodOracle & fOracle, string fileName)
 	    //  envs[ct].multiRoundTrain(model, fOracle, true, num_passes_);
 	    ct++;
 	}
+    
     //test whether can back up one copy of all enviroments
     randIndex = generate_random_index(envs.size());
     for (int i = 0; i< envs.size(); i++)
@@ -84,13 +91,19 @@ void seqMachine::scp_train(vw*model, submodOracle & fOracle, string fileName)
    	    envs[randIndex[i]].multiRoundTrain(model, fOracle, true, num_passes_);
 	}
     fin.close();
+    */
+    int ct  = 0;
     cout << "greedy coaching finished" <<endl;
+    
     for (int iter = 1; iter < num_iters_; iter++)
 	{
 	    cout << "iterations " << iter << endl;
 	    envs.clear();
 	    ct = 0;
 	    fin.open(fileName.c_str());
+	    one_iter_train(model, fOracle, fin, false);
+        
+	    /*
 	    while (!fin.eof())
 		{
 		    environment env;	    
@@ -109,9 +122,10 @@ void seqMachine::scp_train(vw*model, submodOracle & fOracle, string fileName)
 		{
 		    envs[randIndex[i]].multiRoundTrain(model, fOracle, false, num_passes_);
 		}
-	    	    
+	    */	    
 	    fin.close();
 	}
+    multiple_pass_from_cache(model);   
     cout << "training completed" << endl;
 }
 
@@ -188,4 +202,14 @@ vector<int> seqMachine::generate_random_index(int tot)
     cout << endl;
     */
     return randIndex;
+}
+
+void seqMachine::initialize_vw_training_model(vw* model)
+{
+    
+}
+
+void seqMachine::initialize_vw_testing_model(vw *model)
+{
+
 }

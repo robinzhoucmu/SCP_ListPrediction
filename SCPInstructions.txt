@@ -1,3 +1,17 @@
+The SCP (Submodular Contextual Policy) algorithm is designed for domains that involve predicting a list of options. Typical applications include news recommendation, robotic trajectory selection and document summarization, etc. These applications typically require a nice balance between diversity and quality. SCP achieves this via leveraging online submodular optimization: with a single no-regret online learner, we can compete with an optimal sequence of predictions. 
+
+The algorithm ensures both computational and data efficiency. We have released our code on Github. You may try to play with it. 
+
+https://github.com/robinzhoucmu/SCP_ListPrediction
+
+For algorithmic details, please see the paper.
+
+http://arxiv.org/pdf/1305.2532.pdf
+
+
+
+
+
 This is a instruction file for how to use SCP (Submodular Contexual Policy) code for list prediction. 
 For details of the algorithms, please see our paper http://arxiv.org/pdf/1305.2532.pdf. 
 
@@ -11,3 +25,8 @@ cd library
 make
 
 You will see the scp executable. Follow the command line and input data format instructions to play with it.
+
+
+
+
+ 

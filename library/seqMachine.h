@@ -8,7 +8,6 @@ class seqMachine
 {
   public:
     
-    // seqMachine(int num_iters = 3, int num_passes = 10, double budget = 1);
     seqMachine();
     void setBudget(double budget){budget_ = budget;}
     void setTrainingParameters(int num_iters = 3, int num_passes = 10, ml::algorithm_t algo = ml::LINEAR_REGRESSION)
@@ -20,18 +19,22 @@ class seqMachine
 
     //assume the each env_items set is separated by an empty line
     void construct_envs_items(vw*model, istream &fin);  
-    void readonly_one_iter_train(vw* model, submodOracle & fOracle, istream &fin, bool isGreedy = false);
+    void one_iter_train(vw* model, submodOracle & fOracle, istream &fin, bool isGreedy = false);
+    void multiple_pass_from_cache(vw* model);
     void scp_train(vw*model, submodOracle & fOracle, string fileName); //num_iters
     void scp_predict(vw* model, string fileName);
     void cross_validation(vw*model, string trainingFileName, string validationFileName);//model need to be initialized
     void check_predict_score (submodOracle & fOracle);
  private:
-
+    void initialize_vw_training_model(vw* model);
+    void initialize_vw_testing_model(vw* model);
     vector<int> generate_random_index(int tot);
     vector<environment> envs;
     int num_iters_;  //including the initial greedy policy, if ==1 then exact imitation of greedy
     int num_passes_;
     double budget_;
+    double learningRate_;
+    double l2Lambda;
     ml::algorithm_t algo_;
     
 
