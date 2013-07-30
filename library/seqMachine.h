@@ -26,14 +26,14 @@ class seqMachine
     void one_iter_train(vw* model, submodOracle & fOracle, istream &fin, bool isGreedy = false);
     void multiple_pass_from_cache(vw* model);
     void scp_train( submodOracle & fOracle, string fileName); //num_iters
-    void scp_predict(vw* model, string fileName);
+    void scp_predict(string fileName);
     void cross_validation(vw*model, string trainingFileName, string validationFileName);//model need to be initialized
     void check_predict_score (submodOracle & fOracle);
 
  private:
     
     void initialize_vw_training_model();
-    void initialize_vw_testing_model(vw* model);
+    void initialize_vw_testing_model();
     string double2str(double val){
 	std::ostringstream out;
 	out << std::fixed << val;

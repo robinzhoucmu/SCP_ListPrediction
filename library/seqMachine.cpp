@@ -130,9 +130,9 @@ void seqMachine::scp_train( submodOracle & fOracle, string fileName)
     VW::finish(*model);
 }
 
-void seqMachine::scp_predict(vw* model, string fileName)
+void seqMachine::scp_predict(string fileName)
 {
-    initialize_vw_testing_model(model);
+    initialize_vw_testing_model();
     cout << "Run SCP_Predict Only" <<endl;
     ifstream fin;
     fin.open(fileName.c_str());
@@ -152,6 +152,7 @@ void seqMachine::scp_predict(vw* model, string fileName)
 	    ct++;
 	}
     fin.close();
+    VW::finish(*model);
 }
 
 void seqMachine::cross_validation(vw * model, string trainingFileName, string validationFileName) 
@@ -213,7 +214,7 @@ void seqMachine::initialize_vw_training_model()
     model = VW::initialize(vwparams);
 }
 
-void seqMachine::initialize_vw_testing_model(vw *model)
+void seqMachine::initialize_vw_testing_model()
 {
     string vwparams = "-t -i predictor.vw";
     model = VW::initialize(vwparams);

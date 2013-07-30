@@ -122,7 +122,7 @@ int main(int argc, char * argv[])
      string vwparams_test = "-t -i predictor.vw -p predictionTrained.txt ";
       vw* model_test = VW::initialize(vwparams_test);
       // vw * model_test;
-     testseqMachine.scp_predict(model_test, test_file_name);
+     testseqMachine.scp_predict( test_file_name);
      testseqMachine.check_predict_score(fOracle);
      VW::finish(* model_test);
     return 0;
