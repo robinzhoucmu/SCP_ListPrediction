@@ -155,14 +155,17 @@ void seqMachine::scp_predict(string fileName)
     VW::finish(*model);
 }
 //need to set algo type beforehand
-void seqMachine::cross_validation( string trainingFileName, string validationFileName) 
+void seqMachine::cross_validation( string trainingFileName, string validationFileName, submodOracle & fOracle) 
 {
-    double validationAcc = 0;
+    double curScore = 0;
+    double bestScore = 0;
     int best_num_iters, best_num_passes;
-    double best_learning_rate;
-    double l2Lambda;
+    double best_learning_rate, best_l2Lambda;
+    int iters, passes;
+    double l2Lambda, learning_rate;
+    
     double candidate_learning_rate[4] = {0.1, 0.5, 2, 10};
-    double candidate_num_passes[4] = {1, 2, 5, 10};
+    int candidate_num_passes[4] = {1, 2, 5, 10};
     double candidate_l2Lambda[3] = {0.00001, 0.0005, 0.005};
     int candidate_iterations[3] = {2, 5, 10};
     for (int ind_lr = 0; ind_lr < sizeof(candidate_learning_rate)/sizeof(candidate_learning_rate[0]); ind_lr++)
@@ -173,11 +176,31 @@ void seqMachine::cross_validation( string trainingFileName, string validationFil
 			{
 			    for (int ind_iters = 0; ind_iters < sizeof(candidate_iterations)/sizeof(candidate_iterations[0]); ind_iters++)
 				{
-				    
+				    learning_rate =  candidate_learning_rate[ind_lr];
+				    l2Lambda = candidate_l2Lambda[ind_l2Lambda];
+				    iters = candidate_iterations[ind_iters];
+				    passes = candidate_num_passes[ind_nPasses];
+
+				    setTrainingParameters(iters, passes, learning_rate, l2Lambda);
+				    scp_train(fOracle, trainingFileName);
+				    scp_predict(validationFileName);
+				    curScore = get_predict_score(fOracle);
+				    if (curScore > bestScore)
+					{
+					    bestScore = curScore;
+					    best_learning_rate = learning_rate;
+					    best_l2Lambda = l2Lambda;
+					    best_num_passes = passes;
+					    best_num_iters = iters;
+					}
 				}
 			}
 		}
 	}
+
+    //train the model with the best parameter
+    setTrainingParameters( best_num_iters, best_num_passes, best_learning_rate, best_l2Lambda );
+    scp_train(fOracle, trainingFileName);
 
 }
 

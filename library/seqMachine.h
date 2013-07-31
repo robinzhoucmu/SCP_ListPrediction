@@ -31,7 +31,7 @@ class seqMachine
     void multiple_pass_from_cache(vw* model);
     void scp_train( submodOracle & fOracle, string fileName); //num_iters
     void scp_predict(string fileName);
-    void cross_validation( string trainingFileName, string validationFileName);//model need to be initialized
+    void cross_validation( string trainingFileName, string validationFileName, submodOracle & fOracle );//model need to be initialized
     double get_predict_score (submodOracle & fOracle);
 
  private:
