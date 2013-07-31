@@ -154,8 +154,8 @@ void seqMachine::scp_predict(string fileName)
     fin.close();
     VW::finish(*model);
 }
-
-void seqMachine::cross_validation(vw * model, string trainingFileName, string validationFileName) 
+//need to set algo type beforehand
+void seqMachine::cross_validation( string trainingFileName, string validationFileName) 
 {
     double validationAcc = 0;
     int best_num_iters, best_num_passes;
@@ -164,21 +164,24 @@ void seqMachine::cross_validation(vw * model, string trainingFileName, string va
     double candidate_learning_rate[4] = {0.1, 0.5, 2, 10};
     double candidate_num_passes[4] = {1, 2, 5, 10};
     double candidate_l2Lambda[3] = {0.00001, 0.0005, 0.005};
-    int max_iters = 10;
+    int candidate_iterations[3] = {2, 5, 10};
     for (int ind_lr = 0; ind_lr < sizeof(candidate_learning_rate)/sizeof(candidate_learning_rate[0]); ind_lr++)
 	{
 	    for (int ind_nPasses = 0; ind_nPasses < sizeof(candidate_num_passes)/sizeof(candidate_num_passes[0]); ind_nPasses++)
 		{
 		    for (int ind_l2Lambda = 0; ind_l2Lambda < sizeof(candidate_l2Lambda)/sizeof(candidate_l2Lambda[0]); ind_l2Lambda++)
 			{
-			    
+			    for (int ind_iters = 0; ind_iters < sizeof(candidate_iterations)/sizeof(candidate_iterations[0]); ind_iters++)
+				{
+				    
+				}
 			}
 		}
 	}
 
 }
 
-void seqMachine::check_predict_score (submodOracle & fOracle)
+double seqMachine::get_predict_score (submodOracle & fOracle)
 {
     double avgFinalScore;
     for (int i = 0; i < envs.size(); i++)
@@ -189,6 +192,7 @@ void seqMachine::check_predict_score (submodOracle & fOracle)
 	}
     avgFinalScore /= envs.size();
     cout << "Average Prediction Final Score " << avgFinalScore << endl;
+    return avgFinalScore;
 }
 
 vector<int> seqMachine::generate_random_index(int tot)

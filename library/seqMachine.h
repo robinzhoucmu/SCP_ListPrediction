@@ -12,13 +12,17 @@ class seqMachine
     
     seqMachine();
     void setBudget(double budget){budget_ = budget;}
-    void setTrainingParameters(int num_iters = 5, int num_passes = 5, double learningRate = 0.5, double l2Lambda = 0, ml::algorithm_t algo = ml::LINEAR_REGRESSION)
+    void setAlgoType(ml::algorithm_t algo = ml::LINEAR_REGRESSION)
+    {
+	algo_ = algo;
+    }
+    void setTrainingParameters(int num_iters = 5, int num_passes = 5, double learningRate = 0.5, double l2Lambda = 0)
     {	
 	num_iters_ = num_iters; 
 	num_passes_ = num_passes;
 	learningRate_ = learningRate;
 	l2Lambda_ = l2Lambda;
-	algo_ = algo;
+
     }
 
     //assume the each env_items set is separated by an empty line
@@ -27,8 +31,8 @@ class seqMachine
     void multiple_pass_from_cache(vw* model);
     void scp_train( submodOracle & fOracle, string fileName); //num_iters
     void scp_predict(string fileName);
-    void cross_validation(vw*model, string trainingFileName, string validationFileName);//model need to be initialized
-    void check_predict_score (submodOracle & fOracle);
+    void cross_validation( string trainingFileName, string validationFileName);//model need to be initialized
+    double get_predict_score (submodOracle & fOracle);
 
  private:
     

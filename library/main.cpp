@@ -79,13 +79,14 @@ int main(int argc, char * argv[])
      multipleGuess01 fOracle;
     
      testseqMachine.setBudget(budget);
-     testseqMachine.setTrainingParameters(train_num_iters, train_num_passes, learningRate, l2Lambda, algo);
+     testseqMachine.setAlgoType(algo);
+     testseqMachine.setTrainingParameters(train_num_iters, train_num_passes, learningRate, l2Lambda);
      testseqMachine.scp_train( fOracle, train_file_name);
      
      //testing 
      cout << "----------" <<endl;     
      testseqMachine.scp_predict( test_file_name);
-     testseqMachine.check_predict_score(fOracle);
+     testseqMachine.get_predict_score(fOracle);
      
     return 0;
 }
