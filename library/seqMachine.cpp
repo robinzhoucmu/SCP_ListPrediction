@@ -165,9 +165,9 @@ void seqMachine::cross_validation( string trainingFileName, string validationFil
     int iters, passes;
     double l2Lambda, learning_rate;
     
-    double candidate_learning_rate[4] = {0.1, 0.5, 2, 10};
+    double candidate_learning_rate[3] = {0.1, 0.5, 10};
     int candidate_num_passes[4] = {1, 2, 5, 10};
-    double candidate_l2Lambda[3] = {0.00001, 0.0005, 0.005};
+    double candidate_l2Lambda[3] = {0, 0.00001, 0.0005};
     int candidate_iterations[3] = {2, 5, 10};
     for (int ind_lr = 0; ind_lr < sizeof(candidate_learning_rate)/sizeof(candidate_learning_rate[0]); ind_lr++)
 	{
@@ -213,7 +213,7 @@ void seqMachine::cross_validation( string trainingFileName, string validationFil
 
 double seqMachine::get_predict_score (submodOracle & fOracle)
 {
-    cout << "predict on " << envs.size() << " environments" << endl;
+    //  cout << "predict on " << envs.size() << " environments" << endl;
     double avgFinalScore;
     for (int i = 0; i < envs.size(); i++)
 	{
