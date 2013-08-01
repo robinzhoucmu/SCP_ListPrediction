@@ -157,6 +157,7 @@ void seqMachine::scp_predict(string fileName)
 //need to set algo type beforehand
 void seqMachine::cross_validation( string trainingFileName, string validationFileName, submodOracle & fOracle) 
 {
+    cout << "start cross validation" << endl;
     double curScore = 0;
     double bestScore = 0;
     int best_num_iters, best_num_passes;
@@ -192,6 +193,7 @@ void seqMachine::cross_validation( string trainingFileName, string validationFil
 					    best_l2Lambda = l2Lambda;
 					    best_num_passes = passes;
 					    best_num_iters = iters;
+					    cout << bestScore << " , " << best_learning_rate << " , " << best_l2Lambda << " , " << best_num_passes << " , " << best_num_iters << endl;
 					}
 				}
 			}
@@ -199,6 +201,11 @@ void seqMachine::cross_validation( string trainingFileName, string validationFil
 	}
 
     //train the model with the best parameter
+    cout << "bestScore: " << bestScore << endl;
+    cout << "bestLearningRate: " << best_learning_rate << endl;
+    cout << "bestL2Lambda: " << best_l2Lambda << endl;
+    cout << "bestNumPasses" << best_num_passes << endl;
+    cout << "bestNumIterations" << best_num_iters << endl;
     setTrainingParameters( best_num_iters, best_num_passes, best_learning_rate, best_l2Lambda );
     scp_train(fOracle, trainingFileName);
 
@@ -206,6 +213,7 @@ void seqMachine::cross_validation( string trainingFileName, string validationFil
 
 double seqMachine::get_predict_score (submodOracle & fOracle)
 {
+    cout << "predict on " << envs.size() << " environments" << endl;
     double avgFinalScore;
     for (int i = 0; i < envs.size(); i++)
 	{

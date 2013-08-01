@@ -26,7 +26,7 @@ int main(int argc, char * argv[])
 {  
     std::srand ( unsigned ( 0 ) ); 
     string vwparams = " -f predictor2.vw  --readable_model predictorInfo.txt";
-    string train_file_name, test_file_name;
+    string train_file_name, test_file_name, validation_file_name;
     int train_num_iters = 5;
     int train_num_passes = 1;
     double budget = 8;
@@ -40,9 +40,10 @@ int main(int argc, char * argv[])
     desc.add_options()
 	// ("vwparams", po::value<string>(&vwparams), "vw parameters for model instantiation (-i model ...)")
 	("data,d", po::value<string>(&train_file_name), "input file for training")
+	("test,t", po::value<string>(&test_file_name), "test file for prediction")
+	("validate,v", po::value<string>(&validation_file_name), "validation for file cross validation")
 	("iters", po::value<int>(&train_num_iters), "num of iterations, default is 5" )
 	("passes", po::value<int>(&train_num_passes), "num of passes of data, default is 10" )
-	("test,t", po::value<string>(&test_file_name), "test file for prediction")
 	("budget,b", po::value<double>(&budget), "budget" )
 	("l2", po::value<double>(&l2Lambda), "lambda term multiplier for l2 norm, default is 0")
 	("lr", po::value<double>(&learningRate), "const learning rate, default is 0.5")
@@ -81,8 +82,8 @@ int main(int argc, char * argv[])
      testseqMachine.setBudget(budget);
      testseqMachine.setAlgoType(algo);
      testseqMachine.setTrainingParameters(train_num_iters, train_num_passes, learningRate, l2Lambda);
-     testseqMachine.scp_train( fOracle, train_file_name);
-     
+     //   testseqMachine.scp_train( fOracle, train_file_name);
+     testseqMachine.cross_validation(train_file_name, validation_file_name, fOracle);
      //testing 
      cout << "----------" <<endl;     
      testseqMachine.scp_predict( test_file_name);
